@@ -9,7 +9,7 @@ const authentication = {
       method: 'GET',
       url: 'https://secure.vendhq.com/connect',
       params: {
-        client_id: '{{process.env.CLIENT_ID}}',
+        client_id: `${process.env.CLIENT_ID}`,
         state: '{{bundle.inputData.state}}',
         redirect_uri: '{{bundle.inputData.redirect_uri}}',
         response_type: 'code'
@@ -17,7 +17,8 @@ const authentication = {
     },
 
     getAccessToken: (z, bundle) => {
-      const promise = z.request(`${bundle.inputData.domain_prefix}/api/1.0/token`, {
+      z.console.log({ inputData: bundle.inputData });
+      const promise = z.request(`https://${bundle.inputData.domain_prefix}.vendhq.com/api/1.0/token`, {
         method: 'POST',
         body: {
           code: bundle.inputData.code,
@@ -44,7 +45,7 @@ const authentication = {
       });
     },
     refreshAccessToken: (z, bundle) => {
-      const promise = z.request(`${bundle.authData.domain_prefix}/api/1.0/token`, {
+      const promise = z.request(`https://${bundle.authData.domain_prefix}.vendhq.com/api/1.0/token`, {
         method: 'POST',
         body: {
           refresh_token: bundle.authData.refresh_token,
