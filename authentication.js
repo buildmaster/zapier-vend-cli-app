@@ -1,4 +1,3 @@
-const { replaceVars } = require('./utils');
 const testTrigger = require('./triggers/user');
 
 const authentication = {

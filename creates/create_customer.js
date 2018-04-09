@@ -1,5 +1,4 @@
 const makeRequest = (z, bundle) => {
-  console.log({ bundle });
   let url = `https://${bundle.authData.domain_prefix}.vendhq.com/api/2.0/customers`;
 
   const responsePromise = z.request({
@@ -9,7 +8,6 @@ const makeRequest = (z, bundle) => {
   });
   return responsePromise.then(response => {
     response.throwForStatus();
-    console.log({ response });
     return z.JSON.parse(response.content).data;
   });
 };
@@ -41,182 +39,50 @@ module.exports = {
       }
     ],
     outputFields: [
-      {
-        key: 'balance',
-        type: 'string'
-      },
-      {
-        key: 'company_name',
-        type: 'string'
-      },
-      {
-        key: 'contact_source',
-        type: 'string'
-      },
-      {
-        key: 'created_at',
-        type: 'string'
-      },
-      {
-        key: 'custom_field_1',
-        type: 'string'
-      },
-      {
-        key: 'custom_field_2',
-        type: 'string'
-      },
-      {
-        key: 'custom_field_3',
-        type: 'string'
-      },
-      {
-        key: 'custom_field_4',
-        type: 'string'
-      },
-      {
-        key: 'customer_code',
-        type: 'string'
-      },
-      {
-        key: 'customer_group_id',
-        type: 'string'
-      },
-      {
-        key: 'date_of_birth',
-        type: 'string'
-      },
-      {
-        key: 'deleted_at',
-        type: 'string'
-      },
-      {
-        key: 'do_not_email',
-        type: 'string'
-      },
-      {
-        key: 'email',
-        type: 'string'
-      },
-      {
-        key: 'enable_loyalty',
-        type: 'string'
-      },
-      {
-        key: 'fax',
-        type: 'string'
-      },
-      {
-        key: 'first_name',
-        type: 'string'
-      },
-      {
-        key: 'gender',
-        type: 'string'
-      },
-      {
-        key: 'id',
-        type: 'string'
-      },
-      {
-        key: 'last_name',
-        type: 'string'
-      },
-      {
-        key: 'loyalty_balance',
-        type: 'string'
-      },
-      {
-        key: 'mobile',
-        type: 'string'
-      },
-      {
-        key: 'name',
-        type: 'string'
-      },
-      {
-        key: 'note',
-        type: 'string'
-      },
-      {
-        key: 'phone',
-        type: 'string'
-      },
-      {
-        key: 'physical_address_1',
-        type: 'string'
-      },
-      {
-        key: 'physical_address_2',
-        type: 'string'
-      },
-      {
-        key: 'physical_city',
-        type: 'string'
-      },
-      {
-        key: 'physical_country_id',
-        type: 'string'
-      },
-      {
-        key: 'physical_postcode',
-        type: 'string'
-      },
-      {
-        key: 'physical_state',
-        type: 'string'
-      },
-      {
-        key: 'physical_suburb',
-        type: 'string'
-      },
-      {
-        key: 'postal_address_1',
-        type: 'string'
-      },
-      {
-        key: 'postal_address_2',
-        type: 'string'
-      },
-      {
-        key: 'postal_city',
-        type: 'string'
-      },
-      {
-        key: 'postal_country_id',
-        type: 'string'
-      },
-      {
-        key: 'postal_postcode',
-        type: 'string'
-      },
-      {
-        key: 'postal_state',
-        type: 'string'
-      },
-      {
-        key: 'postal_suburb',
-        type: 'string'
-      },
-      {
-        key: 'twitter',
-        type: 'string'
-      },
-      {
-        key: 'updated_at',
-        type: 'string'
-      },
-      {
-        key: 'version',
-        type: 'string'
-      },
-      {
-        key: 'website',
-        type: 'string'
-      },
-      {
-        key: 'year_to_date',
-        type: 'string'
-      }
+      { key: 'balance', type: 'string' },
+      { key: 'company_name', type: 'string' },
+      { key: 'contact_source', type: 'string' },
+      { key: 'created_at', type: 'string' },
+      { key: 'custom_field_1', type: 'string' },
+      { key: 'custom_field_2', type: 'string' },
+      { key: 'custom_field_3', type: 'string' },
+      { key: 'custom_field_4', type: 'string' },
+      { key: 'customer_code', type: 'string' },
+      { key: 'customer_group_id', type: 'string' },
+      { key: 'date_of_birth', type: 'string' },
+      { key: 'deleted_at', type: 'string' },
+      { key: 'do_not_email', type: 'string' },
+      { key: 'email', type: 'string' },
+      { key: 'enable_loyalty', type: 'string' },
+      { key: 'fax', type: 'string' },
+      { key: 'first_name', type: 'string' },
+      { key: 'gender', type: 'string' },
+      { key: 'id', type: 'string' },
+      { key: 'last_name', type: 'string' },
+      { key: 'loyalty_balance', type: 'string' },
+      { key: 'mobile', type: 'string' },
+      { key: 'name', type: 'string' },
+      { key: 'note', type: 'string' },
+      { key: 'phone', type: 'string' },
+      { key: 'physical_address_1', type: 'string' },
+      { key: 'physical_address_2', type: 'string' },
+      { key: 'physical_city', type: 'string' },
+      { key: 'physical_country_id', type: 'string' },
+      { key: 'physical_postcode', type: 'string' },
+      { key: 'physical_state', type: 'string' },
+      { key: 'physical_suburb', type: 'string' },
+      { key: 'postal_address_1', type: 'string' },
+      { key: 'postal_address_2', type: 'string' },
+      { key: 'postal_city', type: 'string' },
+      { key: 'postal_country_id', type: 'string' },
+      { key: 'postal_postcode', type: 'string' },
+      { key: 'postal_state', type: 'string' },
+      { key: 'postal_suburb', type: 'string' },
+      { key: 'twitter', type: 'string' },
+      { key: 'updated_at', type: 'string' },
+      { key: 'version', type: 'string' },
+      { key: 'website', type: 'string' },
+      { key: 'year_to_date', type: 'string' }
     ],
     perform: makeRequest,
     sample: {

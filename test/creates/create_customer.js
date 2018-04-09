@@ -54,7 +54,7 @@ let sampleResponse = {
     "version": 3505346597
   }
 };
-describe.only('Creates - Create Customer', () => {
+describe('Creates - Create Customer', () => {
   zapier.tools.env.inject();
   let _result;
   before(() => {
@@ -62,7 +62,7 @@ describe.only('Creates - Create Customer', () => {
       authData: {
         access_token: "ACCESS_TOKEN",
         refresh_token: "REFRESH_TOKEN",
-        domain_prefix: 'someapp'
+        domain_prefix: 'testdomainprefix'
       },
 
       inputData: {
@@ -72,7 +72,7 @@ describe.only('Creates - Create Customer', () => {
       }
     };
     // mocks the next request that matches this url and querystring
-    nock('https://someapp.vendhq.com')
+    nock('https://testdomainprefix.vendhq.com')
       .post('/api/2.0/customers', bundle.inputData)
       .reply(201, sampleResponse);
     return appTester(App.creates['create_customer'].operation.perform, bundle)

@@ -1,18 +1,74 @@
-// Trigger stub created by 'zapier convert'. This is just a stub - you will need to edit!
-const { replaceVars } = require('../utils');
 
-const getList = (z, bundle) => {
-  let url = `https://{{domain_prefix}}.vendhq.com/api/2.0/consignments`;
-  url = replaceVars(url, bundle);
+const performList = (z, bundle) => {
+  let url = `https://${bundle.authData.domain_prefix}.vendhq.com/api/2.0/consignments`;
 
   const responsePromise = z.request({ url });
   return responsePromise.then(response => {
     response.throwForStatus();
-    return z.JSON.parse(response.content);
+    return z.JSON.parse(response.content).data;
+  }).then((list) => {
+    // have to do a call to get products for each and every consignment
+    return Promise.all(list.map((consignment) => {
+      return z.request({ url: `https://${bundle.authData.domain_prefix}.vendhq.com/api/2.0/consignments/${consignment.id}/products` })
+        .then((response) => {
+          response.throwForStatus();
+          return z.JSON.parse(response.content).data;
+        })
+        .then((products) => products.map((product, index) => ({
+          id: `${consignment.id}_${product.product_id}_${index}`,
+          consignment_id: consignment.id,
+          product_id: product.product_id,
+          count: product.count,
+          received: product.received,
+          cost: product.cost,
+          sequence_number: index
+        })));
+    }));
+  }).then((results) => {
+    //flatten results
+    return [].concat(...results);
   });
 };
-const receiveHook = (z, bundle) => {
+const perform = (z, bundle) => {
+  //override the id field
+  return [
+    Object.assign({},
+      bundle.cleanedRequest,
+      { id: `${bundle.cleanedRequest.consignment_id}_${bundle.cleanedRequest.product_id}_${bundle.cleanedRequest.sequence_number}` }
+    )
+  ];
+};
+const performSubscribe = () => {
 
+  const data = {
+    url: bundle.targetUrl,
+    style: bundle.inputData.style
+  };
+
+  const options = {
+    url: `https://${bundle.authData.domain_prefix}.vendhq.com/api/webhooks`,
+    method: 'POST',
+    body: {
+      data: JSON.stringify({
+        url: bundle.targetUrl,
+        active: "true",
+        type: 'consignment.receive',
+      })
+    },
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded'
+    }
+  };
+
+  return z.request(options)
+    .then((response) => JSON.parse(response.content));
+};
+const performUnsubscribe = () => {
+  const options = {
+    url: `https://${bundle.authData.domain_prefix}.vendhq.com/api/webhooks/${bundle.subscribeData.id}`,
+    method: 'DELETE'
+  };
+  return z.request(options);
 };
 
 module.exports = {
@@ -30,120 +86,26 @@ module.exports = {
   operation: {
     inputFields: [],
     outputFields: [
-      {
-        key: 'consignment_date',
-        type: 'string'
-      },
-      {
-        key: 'created_at',
-        type: 'string'
-      },
-      {
-        key: 'deleted_at',
-        type: 'string'
-      },
-      {
-        key: 'due_at',
-        type: 'string'
-      },
-      {
-        key: 'filters',
-        type: 'string'
-      },
-      {
-        key: 'id',
-        type: 'string'
-      },
-      {
-        key: 'name',
-        type: 'string'
-      },
-      {
-        key: 'outlet_id',
-        type: 'string'
-      },
-      {
-        key: 'received_at',
-        type: 'string'
-      },
-      {
-        key: 'reference',
-        type: 'string'
-      },
-      {
-        key: 'show_inactive',
-        type: 'string'
-      },
-      {
-        key: 'source_outlet_id',
-        type: 'string'
-      },
-      {
-        key: 'status',
-        type: 'string'
-      },
-      {
-        key: 'supplier_id',
-        type: 'string'
-      },
-      {
-        key: 'supplier_invoice',
-        type: 'string'
-      },
-      {
-        key: 'total_cost_gain',
-        type: 'string'
-      },
-      {
-        key: 'total_cost_loss',
-        type: 'string'
-      },
-      {
-        key: 'total_count_gain',
-        type: 'string'
-      },
-      {
-        key: 'total_count_loss',
-        type: 'string'
-      },
-      {
-        key: 'type',
-        type: 'string'
-      },
-      {
-        key: 'updated_at',
-        type: 'string'
-      },
-      {
-        key: 'version',
-        type: 'string'
-      }
+      { key: 'id', type: 'string' },
+      { key: 'consignment_id', type: 'string' },
+      { key: 'product_id', type: 'string' },
+      { key: 'count', type: 'string' },
+      { key: 'received', type: 'string' },
+      { key: 'cost', type: 'string' },
+      { key: 'sequence_number', type: 'number' }
     ],
-    perform: receiveHook,
-    performList: getList,
+    perform,
+    performList,
+    performSubscribe,
+    performUnsubscribe,
     sample: {
-      total_cost_loss: null,
-      consignment_date: '2014-07-13T23:22:00+00:00',
-      reference: null,
-      total_count_gain: null,
-      updated_at: '2015-07-30T02:59:51+00:00',
-      filters: [],
-      received_at: '2015-07-30T02:59:51+00:00',
-      deleted_at: null,
-      id: '7dbe52cd-0ae4-11e4-a0f5-b8ca3a64f8f4',
-      supplier_id: null,
-      source_outlet_id: null,
-      version: 827406,
-      type: 'SUPPLIER',
-      status: 'RECEIVED',
-      supplier_invoice: '',
-      total_cost_gain: null,
-      name: 'Order - Mon 14 Jul 2014',
-      due_at: null,
-      outlet_id: 'b1e04bd8-f019-11e3-a0f5-b8ca3a64f8f4',
-      created_at: '2014-07-13T23:22:00+00:00',
-      show_inactive: true,
-      total_count_loss: null
+      "id": "0afa8de1-1441-11e7-edec-da427ee4bec7_0624dbcd-ef13-11e6-e986-fcc1c366e772_5",
+      "consignment_id": "0afa8de1-1441-11e7-edec-da427ee4bec7",
+      "product_id": "0624dbcd-ef13-11e6-e986-fcc1c366e772",
+      "count": "8.00000",
+      "received": "8.00000",
+      "cost": "4",
+      "sequence_number": 5
     }
   }
 };

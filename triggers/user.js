@@ -1,14 +1,10 @@
-// Trigger stub created by 'zapier convert'. This is just a stub - you will need to edit!
-const { replaceVars } = require('../utils');
 
 const getList = (z, bundle) => {
-  let url = 'https://{{domain_prefix}}.vendhq.com/api/2.0/users';
-  url = replaceVars(url, bundle);
-
+  let url = `https://${bundle.authData.domain_prefix}}.vendhq.com/api/2.0/users`;
   const responsePromise = z.request({ url });
   return responsePromise.then(response => {
     response.throwForStatus();
-    return z.JSON.parse(response.content);
+    return z.JSON.parse(response.content).data;
   });
 };
 
@@ -26,122 +22,34 @@ module.exports = {
   operation: {
     inputFields: [],
     outputFields: [
-      {
-        key: 'data',
-        type: 'string'
-      },
-      {
-        key: 'data[]account_type',
-        type: 'string'
-      },
-      {
-        key: 'data[]created_at',
-        type: 'string'
-      },
-      {
-        key: 'data[]deleted_at',
-        type: 'string'
-      },
-      {
-        key: 'data[]display_name',
-        type: 'string'
-      },
-      {
-        key: 'data[]email',
-        type: 'string'
-      },
-      {
-        key: 'data[]email_verified_at',
-        type: 'string'
-      },
-      {
-        key: 'data[]id',
-        type: 'string'
-      },
-      {
-        key: 'data[]image_source',
-        type: 'string'
-      },
-      {
-        key: 'data[]images__original',
-        type: 'string'
-      },
-      {
-        key: 'data[]images__sl',
-        type: 'string'
-      },
-      {
-        key: 'data[]images__sm',
-        type: 'string'
-      },
-      {
-        key: 'data[]images__ss',
-        type: 'string'
-      },
-      {
-        key: 'data[]images__st',
-        type: 'string'
-      },
-      {
-        key: 'data[]images__standard',
-        type: 'string'
-      },
-      {
-        key: 'data[]images__thumb',
-        type: 'string'
-      },
-      {
-        key: 'data[]is_primary_user',
-        type: 'string'
-      },
-      {
-        key: 'data[]permissions',
-        type: 'string'
-      },
-      {
-        key: 'data[]restricted_outlet_id',
-        type: 'string'
-      },
-      {
-        key: 'data[]restricted_outlet_ids',
-        type: 'string'
-      },
-      {
-        key: 'data[]seen_at',
-        type: 'string'
-      },
-      {
-        key: 'data[]target_daily',
-        type: 'string'
-      },
-      {
-        key: 'data[]target_monthly',
-        type: 'string'
-      },
-      {
-        key: 'data[]target_weekly',
-        type: 'string'
-      },
-      {
-        key: 'data[]updated_at',
-        type: 'string'
-      },
-      {
-        key: 'data[]username',
-        type: 'string'
-      },
-      {
-        key: 'data[]version',
-        type: 'string'
-      },
-      {
-        key: 'version__max',
-        type: 'string'
-      },
-      {
-        key: 'version__min',
-        type: 'string'
-      }
+      { key: 'account_type', type: 'string' },
+      { key: 'created_at', type: 'string' },
+      { key: 'deleted_at', type: 'string' },
+      { key: 'display_name', type: 'string' },
+      { key: 'email', type: 'string' },
+      { key: 'email_verified_at', type: 'string' },
+      { key: 'id', type: 'string' },
+      { key: 'image_source', type: 'string' },
+      { key: 'images__original', type: 'string' },
+      { key: 'images__sl', type: 'string' },
+      { key: 'images__sm', type: 'string' },
+      { key: 'images__ss', type: 'string' },
+      { key: 'images__st', type: 'string' },
+      { key: 'images__standard', type: 'string' },
+      { key: 'images__thumb', type: 'string' },
+      { key: 'is_primary_user', type: 'string' },
+      { key: 'permissions', type: 'string' },
+      { key: 'restricted_outlet_id', type: 'string' },
+      { key: 'restricted_outlet_ids', type: 'string' },
+      { key: 'seen_at', type: 'string' },
+      { key: 'target_daily', type: 'string' },
+      { key: 'target_monthly', type: 'string' },
+      { key: 'target_weekly', type: 'string' },
+      { key: 'updated_at', type: 'string' },
+      { key: 'username', type: 'string' },
+      { key: 'version', type: 'string' },
+      { key: 'version__max', type: 'string' },
+      { key: 'version__min', type: 'string' }
     ],
     perform: getList,
     sample: {
@@ -163,22 +71,6 @@ module.exports = {
           seen_at: '2017-05-22T00:46:59+00:00',
           version: 3348795492,
           id: 'b1ed6158-f019-11e3-a0f5-b8ca3a64f8f4',
-          images: {
-            thumb:
-              'https://vendimageuploadcdn.global.ssl.fastly.net/160,fit,q90/vend-images/user/original/1/b/1ba1099aecfbbcbdfc4aa8efb136507f99a3c0d9.jpg',
-            ss:
-              'https://vendimageuploadcdn.global.ssl.fastly.net/50x50,q90/vend-images/user/original/1/b/1ba1099aecfbbcbdfc4aa8efb136507f99a3c0d9.jpg',
-            standard:
-              'https://vendimageuploadcdn.global.ssl.fastly.net/350,fit,q90/vend-images/user/original/1/b/1ba1099aecfbbcbdfc4aa8efb136507f99a3c0d9.jpg',
-            sm:
-              'https://vendimageuploadcdn.global.ssl.fastly.net/100x100,q90/vend-images/user/original/1/b/1ba1099aecfbbcbdfc4aa8efb136507f99a3c0d9.jpg',
-            sl:
-              'https://vendimageuploadcdn.global.ssl.fastly.net/150x150,q90/vend-images/user/original/1/b/1ba1099aecfbbcbdfc4aa8efb136507f99a3c0d9.jpg',
-            st:
-              'https://vendimageuploadcdn.global.ssl.fastly.net/40x40,q90/vend-images/user/original/1/b/1ba1099aecfbbcbdfc4aa8efb136507f99a3c0d9.jpg',
-            original:
-              'https://vendimageuploadcdn.global.ssl.fastly.net/1920,fit/vend-images/user/original/1/b/1ba1099aecfbbcbdfc4aa8efb136507f99a3c0d9.jpg'
-          },
           account_type: 'admin',
           deleted_at: null,
           email_verified_at: null,
