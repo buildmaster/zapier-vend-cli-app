@@ -17,8 +17,8 @@ const authentication = {
     },
 
     getAccessToken: (z, bundle) => {
-      z.console.log({ inputData: bundle.inputData });
-      const promise = z.request(`https://${bundle.inputData.domain_prefix}.vendhq.com/api/1.0/token`, {
+      z.console.log({ authData: bundle.authData });
+      const promise = z.request(`https://${bundle.authData.domain_prefix}.vendhq.com/api/1.0/token`, {
         method: 'POST',
         body: {
           code: bundle.inputData.code,
